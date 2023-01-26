@@ -1,5 +1,11 @@
 # Rust Assorted Jollof
 
+## Endpoints
+
+### /
+
+Welcome
+
 ## Guides
 
-- <https://betterprogramming.pub/creating-a-web-server-using-rust-rocket-1e4939e582df>
+- <https://rocket.rs/v0.4/guide/getting-started/>
