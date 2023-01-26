@@ -14,7 +14,5 @@ This is just CRUD for the following data
 | Model    | Attributes                                            |
 | -------- | ----------------------------------------------------- |
 | User     | id, name, phone                                       |
-| -----    | ----------                                            |
 | Order    | id, packs, userId (User), location, status            |
-| -----    | ----------                                            |
 | Payments | id, amount, orderId (Order), timestamp, userId (User) |
