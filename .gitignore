@@ -1,2 +1,3 @@
 rust_rocket/target/
 typescript_express/node_modules
+main.db
