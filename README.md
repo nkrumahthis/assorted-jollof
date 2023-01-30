@@ -3,7 +3,7 @@
 AssortedJollof is a repo of one same basic REST api server.
 Rewritten in 5 languages.
 
-The 5 languages are going to be typescript, go, python, php and rust.
+The 6 languages are going to be typescript, go, python, php, java and rust.
 
 The server will persist and read relational data to/from a mysqlite3 database.
 
