@@ -27,13 +27,23 @@ export function create(user: User): User {
 	);
 
 	const info = stmt.run(user);
-	const data = get(Number(info.lastInsertRowid))
+	const data = get(Number(info.lastInsertRowid));
 
 	return data;
 }
 
-export function update(id: number, user: User): User {
-	throw ERROR_NOT_IMPLEMENTED;
+export function update(id: number, user: User): User | undefined {
+	const { name, phone } = user;
+	const sets: string[] = [];
+	if (name) sets.push(`name = ${name}`);
+	if (phone) sets.push(`phone = ${phone}`);
+	const setClause = sets.join(", ");
+	if (!setClause) return;
+
+	const sql = `UPDATE users SET ${setClause} WHERE id = ${id}`;
+	const info = db.prepare(sql).run(user);
+	const data = get(Number(info.lastInsertRowid));
+	return data;
 }
 
 export function remove(id: number): boolean {
