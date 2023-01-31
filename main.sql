@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS orders (
     packs INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     location VARCHAR(255) NOT NULL,
-    status VARCHAR(24) NOT NULL,
+    status VARCHAR(24) NOT NULL CHECK (status IN ('PENDING', 'FULFILLED', 'CANCELLED')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 ); 

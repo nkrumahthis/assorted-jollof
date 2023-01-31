@@ -1,11 +1,17 @@
 import db from "./database";
 
+const PENDING = 'PENDING';
+const FULFILLED = 'FULFILLED';
+const CANCELLED = 'CANCELLED';
+
+type OrderStatus = typeof PENDING | typeof FULFILLED | typeof CANCELLED;
+
 export type Order = {
 	id: number | undefined;
 	packs: number;
 	user_id: number;
 	location: string;
-	status: string;
+	status: OrderStatus;
 };
 
 export const ERROR_ORDER_NOT_FOUND = new Error("order not found");
