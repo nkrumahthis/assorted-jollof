@@ -15,7 +15,7 @@ const router = express.Router();
 router.post("/", (req: Request, res: Response) => {
 	let request = req.body;
 	let response = create(request);
-	res.json(response);
+	res.status(201).json(response);
 });
 
 // read all
