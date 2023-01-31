@@ -47,5 +47,8 @@ export function update(id: number, user: User): User | undefined {
 }
 
 export function remove(id: number): boolean {
-	throw ERROR_NOT_IMPLEMENTED;
+	const sql = `DELETE FROM users WHERE id = ${id}`;
+	const info = db.prepare(sql).run()
+	console.log(info)
+	return info.changes > 0
 }
