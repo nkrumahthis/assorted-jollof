@@ -29,13 +29,28 @@ export function create(order: Order): Order {
 	);
 
 	const info = stmt.run(order);
-	const data = get(Number(info.lastInsertRowid))
+	const data = get(Number(info.lastInsertRowid));
 
 	return data;
 }
 
-export function update(id: number, order: Order): Order {
-	throw ERROR_NOT_IMPLEMENTED;
+export function update(id: number, order: Order): Order | undefined {
+	const { packs, user_id, location, status } = order;
+	const sets: string[] = [];
+	if (packs) sets.push(`packs = ${packs}`);
+	if (user_id) sets.push(`user_id = ${user_id}`);
+	if (location) sets.push(`location = '${location}'`);
+	if (status) sets.push(`status = '${status}'`);
+
+	const setClause = sets.join(", ");
+	if (!setClause) return;
+
+	const sql = `UPDATE orders SET ${setClause} WHERE id = ${id}`;
+
+	const info = db.prepare(sql).run(order);
+	const data = get(Number(info.lastInsertRowid));
+
+	return data;
 }
 
 export function remove(id: number): boolean {
