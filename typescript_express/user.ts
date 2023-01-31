@@ -35,14 +35,15 @@ export function create(user: User): User {
 export function update(id: number, user: User): User | undefined {
 	const { name, phone } = user;
 	const sets: string[] = [];
-	if (name) sets.push(`name = ${name}`);
-	if (phone) sets.push(`phone = ${phone}`);
+	if (name) sets.push(`name = '${name}'`);
+	if (phone) sets.push(`phone = '${phone}'`);
 	const setClause = sets.join(", ");
 	if (!setClause) return;
 
 	const sql = `UPDATE users SET ${setClause} WHERE id = ${id}`;
-	const info = db.prepare(sql).run(user);
-	const data = get(Number(info.lastInsertRowid));
+	console.log(sql)
+	const info = db.prepare(sql).run();
+	const data = get(id);
 	return data;
 }
 
