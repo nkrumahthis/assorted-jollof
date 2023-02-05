@@ -13,6 +13,7 @@ app.get('/', (req: Request, res:Response) => {
 
 app.use("/users", userRouter)
 app.use("/orders", orderRouter)
+app.use("/payments", paymentRouter)
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
