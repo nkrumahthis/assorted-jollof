@@ -1,6 +1,7 @@
 import express, {Request, Response} from "express"
-import userRouter from "./user.router"
-import orderRouter from "./order.router"
+import userRouter from "./routers/user.router"
+import orderRouter from "./routers/order.router"
+import paymentRouter from "./routers/payment.router"
 
 const app = express();
 app.use(express.json())

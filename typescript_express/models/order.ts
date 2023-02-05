@@ -1,4 +1,4 @@
-import db from "./database";
+import db from "../database";
 
 const PENDING = 'PENDING';
 const FULFILLED = 'FULFILLED';

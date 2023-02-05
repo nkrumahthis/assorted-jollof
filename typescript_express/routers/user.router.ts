@@ -7,7 +7,7 @@ import {
 	get,
 	remove,
 	update,
-} from "./user";
+} from "../models/user";
 
 const router = express.Router();
 
