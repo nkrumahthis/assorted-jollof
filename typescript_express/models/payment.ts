@@ -25,7 +25,7 @@ export function get(id: number): Payment {
 export function create(payment: Payment): Payment {
 	// The following are equivalent.
 	const stmt = db.prepare(
-		"INSERT INTO payments (name, phone) VALUES (:name, :phone)"
+		"INSERT INTO payments (amount, orderId, userId) VALUES (:amount, :orderId, :userId)"
 	);
 
 	const info = stmt.run(payment);
