@@ -1,5 +1,6 @@
 import express, {Request, Response} from "express"
 import userRouter from "./routers/user.router"
+import customerRouter from "./routers/customer.router"
 import orderRouter from "./routers/order.router"
 import paymentRouter from "./routers/payment.router"
 
@@ -12,6 +13,7 @@ app.get('/', (req: Request, res:Response) => {
 });
 
 app.use("/users", userRouter)
+app.use("/customers", customerRouter)
 app.use("/orders", orderRouter)
 app.use("/payments", paymentRouter)
 
