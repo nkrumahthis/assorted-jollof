@@ -15,3 +15,17 @@ This is just CRUD for the following data
 | Customer | id, name, phone, token                                |
 | Order    | id, packs, userId (User), location, status            |
 | Payments | id, amount, orderId (Order), timestamp, userId (User) |
+
+## Implemented
+
+### Typescript (Express)
+
+- [x] models
+- [x] routers and controllers
+- [ ] filters
+- [ ] auth
+
+### Rust (Rocket)
+
+- [-] models
+- [-] routers and controllers
