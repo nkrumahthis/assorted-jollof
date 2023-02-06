@@ -3,7 +3,8 @@ import db from "../database";
 export type User = {
 	id: number | undefined;
 	name: string;
-	phone: string;
+	email: string;
+    password: string
 };
 
 export const ERROR_USER_NOT_FOUND = new Error("user not found");
@@ -23,7 +24,7 @@ export function get(id: number): User {
 export function create(user: User): User {
 	// The following are equivalent.
 	const stmt = db.prepare(
-		"INSERT INTO users (name, phone) VALUES (:name, :phone)"
+		"INSERT INTO users (name, email, password) VALUES (:name, :email, password)"
 	);
 
 	const info = stmt.run(user);
@@ -33,10 +34,11 @@ export function create(user: User): User {
 }
 
 export function update(id: number, user: User): User | undefined {
-	const { name, phone } = user;
+	const { name, email, password } = user;
 	const sets: string[] = [];
 	if (name) sets.push(`name = '${name}'`);
-	if (phone) sets.push(`phone = '${phone}'`);
+	if (email) sets.push(`email = '${email}'`);
+	if (password) sets.push(`password = '${password}'`);
 	const setClause = sets.join(", ");
 	if (!setClause) return;
 
