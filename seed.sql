@@ -1,7 +1,7 @@
 INSERT OR REPLACE INTO users(id, name, phone) VALUES
-    (1, 'Adam Asante', '+1234567890'),
-    (2, 'Bill Boakye', '+9872340192'),
-    (3, 'Charles C', '+7232019923');
+    (1, 'Adam Asante', '+1234567890', "password"),
+    (2, 'Bill Boakye', '+9872340192', "password"),
+    (3, 'Charles C', '+7232019923', "password");
 
 INSERT OR REPLACE INTO orders(id, packs, user_id, location, status, created_at) VALUES
     (1, 1, 1, 'Ashaiman Junction', 'FULFILLED', NULL),
