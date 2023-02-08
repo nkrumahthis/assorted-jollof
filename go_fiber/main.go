@@ -1,6 +1,7 @@
 package main
 
 import (
+	"nkrumahthis/assorted-jollof/database"
 	"nkrumahthis/assorted-jollof/router"
 
 	"github.com/gofiber/fiber/v2"
@@ -8,6 +9,8 @@ import (
 
 func main() {
 	app := fiber.New()
+
+	database.PrepDB()
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Assorted Jollof!")

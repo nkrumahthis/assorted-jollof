@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"database/sql"
+	"nkrumahthis/assorted-jollof/database"
 	"nkrumahthis/assorted-jollof/model"
 
 	"github.com/gofiber/fiber/v2"
@@ -9,15 +9,16 @@ import (
 
 func GetUsers(c *fiber.Ctx) error {
 	// Connect to the database
-	db, err := sql.Open("sqlite3", "../main.db")
+	db, err := database.GetDB()
+
 	if err != nil {
-		return c.Status(500).SendString("Could not connect to the database")
+		return c.Status(500).SendString(err.Error())
 	}
 	defer db.Close()
 
 	users, err := model.GetUsersFromDB(db)
 	if err != nil {
-		return c.Status(500).SendString("Could not retrieve users")
+		return c.Status(500).SendString(err.Error())
 	}
 
 	return c.JSON(users)
