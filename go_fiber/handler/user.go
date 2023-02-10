@@ -1,25 +1,35 @@
 package handler
 
 import (
-	"nkrumahthis/assorted-jollof/database"
 	"nkrumahthis/assorted-jollof/model"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func GetUsers(c *fiber.Ctx) error {
-	// Connect to the database
-	db, err := database.GetDB()
 
-	if err != nil {
-		return c.Status(500).SendString(err.Error())
-	}
-	defer db.Close()
-
-	users, err := model.GetUsersFromDB(db)
+	users, err := model.GetUsersFromDB()
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
 
 	return c.JSON(users)
+}
+
+func GetUser(c *fiber.Ctx) error {
+	id, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(400).SendString("invalid user ID")
+	}
+
+	
+	user, err := model.GetUserFromDB(id)
+	if err != nil {
+		return c.Status(500).SendString("Failed to get user: " + err.Error())
+	}
+	
+	return c.JSON(user)
+
+	
 }
