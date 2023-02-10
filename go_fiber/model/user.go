@@ -1,6 +1,8 @@
 package model
 
-import "database/sql"
+import (
+	"nkrumahthis/assorted-jollof/database"
+)
 
 type User struct {
 	ID       int    `json:"id"`
@@ -9,7 +11,12 @@ type User struct {
 	Password string `json:"password"`
 }
 
-func GetUsersFromDB(db *sql.DB) ([]User, error) {
+func GetUsersFromDB() ([]User, error) {
+	db,err := database.GetDB()
+	if err != nil {
+		return nil, err
+	}
+
 	rows, err := db.Query(("SELECT * from users"))
 	if err != nil {
 		return nil, err
@@ -31,4 +38,18 @@ func GetUsersFromDB(db *sql.DB) ([]User, error) {
 	}
 
 	return users, nil
+}
+
+func GetUserFromDB(id int) (User, error) {
+	var user User
+
+	db, err := database.GetDB()
+	if err != nil {
+		return user, err 
+	}
+
+	row := db.QueryRow("SELECT * FROM users WHERE id = ?", id)
+	err = row.Scan(&user.ID, &user.Name, &user.Email, &user.Password)
+
+	return user, err
 }
