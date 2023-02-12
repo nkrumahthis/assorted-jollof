@@ -39,5 +39,19 @@ func FindAll() ([]Order, error) {
 	}
 
 	return orders, nil
+}
+
+func find(id int) (Order, error) {
+	var order Order
+
+	db, err := database.GetDB()
+	if err != nil {
+		return order, err
+	}
+
+	row := db.QueryRow("SELECT * from order WHERE id=$1", id)
+	err = row.Scan(&order.ID, &order.Packs, &order.CustomerId, &order.Location, &order.Status, &order.CreatedAt); 
+
+	return order, err
 
 }
