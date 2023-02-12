@@ -1,4 +1,4 @@
-package model
+package repository
 
 import "nkrumahthis/assorted-jollof/database"
 
@@ -11,7 +11,7 @@ type Order struct {
 	CreatedAt  any `json:"created_at"`
 }
 
-func FindAll() ([]Order, error) {
+func FindAllOrders() ([]Order, error) {
 	db, err := database.GetDB()
 	if err != nil {
 		return nil, err
@@ -41,7 +41,7 @@ func FindAll() ([]Order, error) {
 	return orders, nil
 }
 
-func find(id int) (Order, error) {
+func FindOrder(id int) (Order, error) {
 	var order Order
 
 	db, err := database.GetDB()
@@ -49,7 +49,7 @@ func find(id int) (Order, error) {
 		return order, err
 	}
 
-	row := db.QueryRow("SELECT * from order WHERE id=$1", id)
+	row := db.QueryRow("SELECT * from orders WHERE id=$1", id)
 	err = row.Scan(&order.ID, &order.Packs, &order.CustomerId, &order.Location, &order.Status, &order.CreatedAt); 
 
 	return order, err

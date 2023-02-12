@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"nkrumahthis/assorted-jollof/model"
+	"nkrumahthis/assorted-jollof/repository"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -9,7 +9,7 @@ import (
 
 func GetUsers(c *fiber.Ctx) error {
 
-	users, err := model.GetUsersFromDB()
+	users, err := repository.FindAllUsers()
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
@@ -23,13 +23,11 @@ func GetUser(c *fiber.Ctx) error {
 		return c.Status(400).SendString("invalid user ID")
 	}
 
-	
-	user, err := model.GetUserFromDB(id)
+	user, err := repository.FindUser(id)
 	if err != nil {
 		return c.Status(500).SendString("Failed to get user: " + err.Error())
 	}
-	
+
 	return c.JSON(user)
 
-	
 }

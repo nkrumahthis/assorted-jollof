@@ -9,4 +9,5 @@ func SetupRoutes(app *fiber.App) {
 	app.Get("/users/:id", GetUser)
 
 	app.Get("/orders", GetOrders)
+	app.Get("/orders/:id", GetOrder)
 }

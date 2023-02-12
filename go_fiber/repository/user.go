@@ -1,4 +1,4 @@
-package model
+package repository
 
 import (
 	"nkrumahthis/assorted-jollof/database"
@@ -11,7 +11,7 @@ type User struct {
 	Password string `json:"password"`
 }
 
-func GetUsersFromDB() ([]User, error) {
+func FindAllUsers() ([]User, error) {
 	db,err := database.GetDB()
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func GetUsersFromDB() ([]User, error) {
 	return users, nil
 }
 
-func GetUserFromDB(id int) (User, error) {
+func FindUser(id int) (User, error) {
 	var user User
 
 	db, err := database.GetDB()
