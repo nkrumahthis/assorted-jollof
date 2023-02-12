@@ -2,7 +2,7 @@ package main
 
 import (
 	"nkrumahthis/assorted-jollof/database"
-	"nkrumahthis/assorted-jollof/router"
+	"nkrumahthis/assorted-jollof/handler"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,7 +16,7 @@ func main() {
 		return c.SendString("Assorted Jollof!")
 	})
 
-	router.SetupRoutes(app)
+	handler.SetupRoutes(app)
 
 	app.Listen(":3000")
 }
