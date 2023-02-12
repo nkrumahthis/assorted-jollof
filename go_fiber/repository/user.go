@@ -12,7 +12,7 @@ type User struct {
 }
 
 func FindAllUsers() ([]User, error) {
-	db,err := database.GetDB()
+	db, err := database.GetDB()
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func FindUser(id int) (User, error) {
 
 	db, err := database.GetDB()
 	if err != nil {
-		return user, err 
+		return user, err
 	}
 
 	row := db.QueryRow("SELECT * FROM users WHERE id = ?", id)

@@ -19,6 +19,9 @@ func GetCustomers(c *fiber.Ctx) error {
 
 func GetCustomer(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(500).SendString("invalid customer id")
+	}
 	customers, err := repository.FindCustomer(id)
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
