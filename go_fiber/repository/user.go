@@ -56,11 +56,10 @@ func FindUser(id int) (User, error) {
 }
 
 func FindUsersWithFilter(name, email, password string) ([]User, error) {
-	var users []User
 
 	db, err := database.GetDB()
 	if err != nil {
-		return users,err
+		return nil,err
 	}
 
 	// Build the SQL query based on the provided filter parameters
@@ -81,7 +80,7 @@ func FindUsersWithFilter(name, email, password string) ([]User, error) {
     stmt, err := db.Prepare(query)
     if err != nil {
         // Handle error
-        return users, err
+        return nil, err
     }
     defer stmt.Close()
 
@@ -89,9 +88,11 @@ func FindUsersWithFilter(name, email, password string) ([]User, error) {
     rows, err := stmt.Query(email, name, password)
     if err != nil {
         // Handle error
-        return users, err
+        return nil, err
     }
     defer rows.Close()
+
+	var users []User
 
     // Iterate over the rows and scan the data into User structs
     for rows.Next() {
