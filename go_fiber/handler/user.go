@@ -31,3 +31,18 @@ func GetUser(c *fiber.Ctx) error {
 	return c.JSON(user)
 
 }
+
+func GetUsersByFilter(c *fiber.Ctx) error {
+	// Parse the query parameters from the URL
+
+	email := c.Query("email")
+    name := c.Query("name")
+    password := c.Query("password")
+
+	users, err := repository.FindUsersWithFilter(name, email, password)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+	
+	return c.JSON(users)
+}
