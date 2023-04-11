@@ -5,7 +5,7 @@ import (
 )
 
 func SetupRoutes(app *fiber.App) {
-	app.Get("/users", GetUsers)
+	app.Get("/users", GetUsersByFilter)
 	app.Get("/users/:id", GetUser)
 
 	app.Get("/orders", GetOrders)

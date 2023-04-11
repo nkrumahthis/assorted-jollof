@@ -62,50 +62,47 @@ func FindUsersWithFilter(name, email, password string) ([]User, error) {
 		return nil,err
 	}
 
-	// Build the SQL query based on the provided filter parameters
-    query := "SELECT * FROM users WHERE 1 = 1" // Start with a true condition
+	query := "SELECT * FROM users WHERE 1 = 1" // Start with a true condition
+	var params []interface{}                // Slice to hold the parameter values
 
-    // Add the filter conditions based on the provided parameters
-    if email != "" {
-        query += " AND email = ?"
-    }
-    if name != "" {
-        query += " AND name = ?"
-    }
-    if password != "" {
-        query += " AND password = ?"
-    }
+	// Add the filter conditions and parameters based on the provided parameters
+	if email != "" {
+		query += " AND email = ?"
+		params = append(params, email)
+	}
+	if name != "" {
+		query += " AND name = ?"
+		params = append(params, name)
+	}
+	if password != "" {
+		query += " AND password = ?"
+		params = append(params, password)
+	}
 
-    // Prepare the SQL statement
-    stmt, err := db.Prepare(query)
-    if err != nil {
-        // Handle error
-        return nil, err
-    }
-    defer stmt.Close()
+	// Prepare the SQL statement
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
 
-    // Execute the SQL statement with the provided filter parameters
-    rows, err := stmt.Query(email, name, password)
-    if err != nil {
-        // Handle error
-        return nil, err
-    }
-    defer rows.Close()
+	// Execute the SQL statement with the provided filter parameters
+	rows, err := stmt.Query(params...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
+	// Iterate over the rows and scan the data into User structs
 	var users []User
+	for rows.Next() {
+		var user User
+		err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Password)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
 
-    // Iterate over the rows and scan the data into User structs
-    for rows.Next() {
-        var user User
-        err := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Password)
-        if err != nil {
-            // Handle error
-            return users, err
-        }
-        users = append(users, user)
-    }
-
-    // Return the users as JSON
-    // You can use the c.JSON() function to send the users as JSON response
-    return users, nil
+	return users, nil
 }
