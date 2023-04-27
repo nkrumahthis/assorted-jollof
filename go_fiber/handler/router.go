@@ -11,6 +11,6 @@ func SetupRoutes(app *fiber.App) {
 	app.Get("/orders", GetOrdersByFilter)
 	app.Get("/orders/:id", GetOrder)
 
-	app.Get("/customers", GetCustomers)
+	app.Get("/customers", GetCustomersByFilter)
 	app.Get("/customers/:id", GetCustomer)
 }

@@ -30,3 +30,20 @@ func GetCustomer(c *fiber.Ctx) error {
 	return c.JSON(customers)
 
 }
+
+func GetCustomersByFilter(c *fiber.Ctx) error {
+	// collect query params from request
+	id := c.Query("id")
+	name := c.Query("name")
+	phone := c.Query("phone")
+	token := c.Query("token")
+
+	// find customers by those params
+	customers, err := repository.FindCustomersByParams(id, name, phone, token)
+
+	// return response from query
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+	return c.JSON(customers)
+}

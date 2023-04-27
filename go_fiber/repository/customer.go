@@ -47,3 +47,56 @@ func FindCustomer(id int) (Customer, error){
 
 	return customer, err
 }
+
+func FindCustomersByParams(id, name, phone, token string) ([]Customer, error) {
+	// get an instance of the database
+	db, err := database.GetDB()
+	if err != nil {
+		return nil, err
+	}
+
+	query := "SELECT * FROM customers WHERE 1 = 1" // Start with a true condition
+	var params []interface{}
+
+	// Add the filter conditions and parameters based on the providers parameters
+	if id != "" {
+		query += " AND id = ?"
+		params = append(params, id)
+	}
+	if name != "" {
+		query += " AND names = ?"
+		params = append(params, name)
+	}
+	if phone != "" {
+		query += " AND phone = ?"
+		params = append(params, phone)
+	}
+	if token != "" {
+		query += " AND token = ?"
+		params = append(params, token)
+	}
+
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query(params...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var customers []Customer
+	for rows.Next() {
+		var customer Customer
+		err = rows.Scan(&customer.ID, &customer.Name, &customer.Phone, &customer.Token)
+		if err != nil {
+			return nil, err
+		}
+		customers = append(customers, customer)
+	}
+
+	return customers, nil
+}
