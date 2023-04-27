@@ -55,7 +55,7 @@ func FindUser(id int) (User, error) {
 	return user, err
 }
 
-func FindUsersWithFilter(name, email, password string) ([]User, error) {
+func FindUsersWithParams(name, email, password string) ([]User, error) {
 
 	db, err := database.GetDB()
 	if err != nil {

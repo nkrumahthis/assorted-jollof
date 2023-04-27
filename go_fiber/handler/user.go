@@ -39,7 +39,7 @@ func GetUsersByFilter(c *fiber.Ctx) error {
     name := c.Query("name")
     password := c.Query("password")
 
-	users, err := repository.FindUsersWithFilter(name, email, password)
+	users, err := repository.FindUsersWithParams(name, email, password)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 	}
