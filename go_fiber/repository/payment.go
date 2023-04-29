@@ -6,14 +6,40 @@ import (
 )
 
 type Payment struct {
-	ID int				`json:"id"`
-	Amount float32		`json:"amount"`
-	OrderId int			`json:"order_id"`
-	Timestamp *time.Time	`json:"timestamp"`
-	UserId int			`json:"user_id"`
-};
+	ID         int        `json:"id"`
+	Amount     float32    `json:"amount"`
+	CustomerId int        `json:"customer_id"`
+	OrderId		int 	`json:"order_id"`
+	CreatedAt  *time.Time `json:"created_at"`
+	UserId     int        `json:"user_id"`
+}
 
-func FindPayment(id int) (Payment, error){
+func CreatePayment(orderId int, amount float32, customerId int) (*Payment, error) {
+	db, err := database.GetDB()
+
+	if err != nil {
+		return nil, err
+	}
+
+	query := "INSERT INTO payments (id, order_id, amount, customer_id, created_at) VALUES ($1, $2, $3, $4, $5)"
+	result, err := db.Exec(query, nil, orderId, amount, customerId, time.Now())
+	if err != nil {
+		return nil, err
+	}
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	payment, err := FindPayment(int(id))
+	if err != nil {
+		return nil, err
+	}
+
+	return &payment, err
+}
+
+func FindPayment(id int) (Payment, error) {
 	var payment Payment
 	db, err := database.GetDB()
 	if err != nil {
@@ -21,11 +47,11 @@ func FindPayment(id int) (Payment, error){
 	}
 
 	row := db.QueryRow("SELECT * FROM payments WHERE id=$1", id)
-	err = row.Scan(&payment.ID, &payment.OrderId, &payment.Amount, &payment.UserId, &payment.Timestamp)
+	err = row.Scan(&payment.ID, &payment.CustomerId, &payment.Amount, &payment.UserId, &payment.CreatedAt)
 	return payment, err
 }
 
-func FindPaymentsByParams(id, amount , orderId, timestamp, userId string) ([]Payment, error) {
+func FindPaymentsByParams(id, amount, orderId, timestamp, userId string) ([]Payment, error) {
 	db, err := database.GetDB()
 	if err != nil {
 		return nil, err
@@ -71,7 +97,7 @@ func FindPaymentsByParams(id, amount , orderId, timestamp, userId string) ([]Pay
 	var payments []Payment
 	for rows.Next() {
 		var payment Payment
-		err = rows.Scan(&payment.ID, &payment.Amount, &payment.OrderId, &payment.UserId, &payment.Timestamp)
+		err = rows.Scan(&payment.ID, &payment.Amount, &payment.CustomerId, &payment.UserId, &payment.CreatedAt)
 		if err != nil {
 			return nil, err
 		}

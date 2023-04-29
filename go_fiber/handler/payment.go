@@ -8,14 +8,18 @@ import (
 )
 
 func CreatePayment(c *fiber.Ctx) error {
-	payload := repository.Payment{}
+	payload := struct {
+		OrderId    int     `json:"order_id"`
+		Amount     float32 `json:"amount"`
+		CustomerId int     `json:"customer_id"`
+	}{}
 
 	err := c.BodyParser(&payload)
 	if err != nil {
 		return c.Status(500).JSON(err.Error())
 	}
 
-	payment, err := repository.CreatePayment(payload)
+	payment, err := repository.CreatePayment(payload.OrderId, payload.Amount, payload.CustomerId)
 
 	if err != nil {
 		return c.Status(500).JSON(err.Error())
@@ -28,11 +32,11 @@ func GetPaymentsByFilter(c *fiber.Ctx) error {
 	// collect query params from request
 	id := c.Query("id")
 	amount := c.Query("amount")
-	order_id := c.Query("order_query")
-	timestamp := c.Query("timestamp")
-	user_id := c.Query("user_id")
+	order_id := c.Query("order_id")
+	created_at := c.Query("created_at")
+	customer_id := c.Query("customer_id")
 
-	payments, err := repository.FindPaymentsByParams(id, amount, order_id, timestamp, user_id)
+	payments, err := repository.FindPaymentsByParams(id, amount, order_id, created_at, customer_id)
 	if err != nil {
 		return c.Status(500).JSON(err.Error())
 	}
