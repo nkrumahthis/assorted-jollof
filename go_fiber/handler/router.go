@@ -16,5 +16,6 @@ func SetupRoutes(app *fiber.App) {
 
 	app.Post("/payments", CreatePayment)
 	app.Get("/payments", GetPaymentsByFilter)
+	app.Get("/payments/:id", GetPayment)
 
 }
