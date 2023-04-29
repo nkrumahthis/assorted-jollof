@@ -7,6 +7,36 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func CreateOrder(c *fiber.Ctx) error {
+	payload := struct {
+		Packs      int
+		CustomerId int
+		Location   string
+		Status     string
+	}{}
+
+	// load data from body of request
+	err := c.BodyParser(&payload)
+	if err != nil {
+		return c.Status(500).JSON(err.Error())
+	}
+
+	if payload.Status == "" {
+		payload.Status = "PENDING"
+	}
+
+	// create a new order
+	order, err := repository.CreateOrder(payload.Packs, payload.CustomerId, payload.Location, payload.Status)
+
+	// if error, send message
+	if err != nil {
+		return c.Status(500).JSON(err.Error())
+	}
+
+	// respond with order
+	return c.JSON(order)
+}
+
 func GetOrders(c *fiber.Ctx) error {
 	orders, err := repository.FindAllOrders()
 	if err != nil {

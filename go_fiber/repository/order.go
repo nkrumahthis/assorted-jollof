@@ -1,6 +1,9 @@
 package repository
 
-import "nkrumahthis/assorted-jollof/database"
+import (
+	"nkrumahthis/assorted-jollof/database"
+	"time"
+)
 
 type Order struct {
 	ID         int    `json:"id"`
@@ -8,7 +11,35 @@ type Order struct {
 	CustomerId int    `json:"customer_id"`
 	Location   string `json:"location"`
 	Status     string `json:"status"`
-	CreatedAt  any `json:"created_at"`
+	CreatedAt  any    `json:"created_at"`
+}
+
+func CreateOrder(packs int, customer_id int, location string, status string) (*Order, error) {
+	// fetch database
+	db, err := database.GetDB()
+	if err != nil {
+		return nil, err
+	}
+
+	// prepare insert query
+	query := "INSERT INTO orders (id, packs, customer_id, location, status, created_at) VALUES ($1, $2, $3, $4, $5, $6)"
+	result, err := db.Exec(query, nil, packs, customer_id, location, status, time.Now())
+	if err != nil {
+		return nil, err
+	}
+
+	// get last insert id
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	order, err := FindOrder(int(id))
+	if err != nil {
+		return nil, err
+	}
+
+	return &order, err
 }
 
 func FindAllOrders() ([]Order, error) {
@@ -26,7 +57,7 @@ func FindAllOrders() ([]Order, error) {
 	orders := make([]Order, 0)
 	for rows.Next() {
 		var order Order
-		err := rows.Scan(&order.ID, &order.Packs, &order.CustomerId, &order.Location, &order.Status, &order.CreatedAt); 
+		err := rows.Scan(&order.ID, &order.Packs, &order.CustomerId, &order.Location, &order.Status, &order.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -48,8 +79,8 @@ func FindOrdersByParams(id, packs, customerId, location, status, createdAt strin
 		return nil, err
 	}
 
-	query := "SELECT * FROM orders WHERE 1 = 1"	// Start with a true condition
-	var params []interface{}					// slice to hold parameter values
+	query := "SELECT * FROM orders WHERE 1 = 1" // Start with a true condition
+	var params []interface{}                    // slice to hold parameter values
 
 	// Add the filter conditions and parameters based on the provided parameters
 	if id != "" {
@@ -95,7 +126,7 @@ func FindOrdersByParams(id, packs, customerId, location, status, createdAt strin
 	var orders []Order
 	for rows.Next() {
 		var order Order
-		err = rows.Scan(&order.ID, &order.Packs, &order.CustomerId, &order.Location, &order.Status, &order.CreatedAt); 
+		err = rows.Scan(&order.ID, &order.Packs, &order.CustomerId, &order.Location, &order.Status, &order.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -115,7 +146,7 @@ func FindOrder(id int) (Order, error) {
 	}
 
 	row := db.QueryRow("SELECT * from orders WHERE id=$1", id)
-	err = row.Scan(&order.ID, &order.Packs, &order.CustomerId, &order.Location, &order.Status, &order.CreatedAt); 
+	err = row.Scan(&order.ID, &order.Packs, &order.CustomerId, &order.Location, &order.Status, &order.CreatedAt)
 
 	return order, err
 
