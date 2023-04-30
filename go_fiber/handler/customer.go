@@ -7,6 +7,28 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func CreateCustomer(c *fiber.Ctx) error {
+	// expected payload
+	payload := struct {
+		Name  string
+		Phone string
+		Token string
+	}{}
+
+	// parsing payload
+	err := c.BodyParser(&payload)
+	if err != nil {
+		return c.Status(400).JSON(err.Error())
+	}
+
+	// create new customer in repository
+	customer, err := repository.CreateCustomer(payload.Name, payload.Phone, payload.Token)
+	if err != nil {
+		return c.Status(500).JSON(err.Error())
+	}
+	return c.JSON(customer)
+}
+
 func GetCustomers(c *fiber.Ctx) error {
 	customers, err := repository.FindAllCustomers()
 	if err != nil {

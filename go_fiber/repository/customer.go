@@ -2,16 +2,41 @@ package repository
 
 import "nkrumahthis/assorted-jollof/database"
 
-type Customer struct{
-	ID int 
-	Name string 
+type Customer struct {
+	ID    int
+	Name  string
 	Phone string
 	Token string
 }
 
-func FindAllCustomers() ([]Customer, error){
+func CreateCustomer(name string, phone string, token string) (*Customer, error) {
+	// get database
 	db, err := database.GetDB()
-	if err != nil{
+	if err != nil {
+		return nil, err
+	}
+
+	// create query, execute
+	query := "INSERT INTO customers (id, name, phone, token) VALUES ($1, $2, $3, $4)"
+	result, err := db.Exec(query, nil, name, phone, token)
+	if err != nil {
+		return nil, err
+	}
+
+	// get id of new row
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	// retrieve new customer
+	customer, err := FindCustomer(int(id))
+	return &customer, err
+}
+
+func FindAllCustomers() ([]Customer, error) {
+	db, err := database.GetDB()
+	if err != nil {
 		return nil, err
 	}
 
@@ -34,7 +59,7 @@ func FindAllCustomers() ([]Customer, error){
 
 }
 
-func FindCustomer(id int) (Customer, error){
+func FindCustomer(id int) (Customer, error) {
 	var customer Customer
 
 	db, err := database.GetDB()
