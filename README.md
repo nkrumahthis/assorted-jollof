@@ -25,6 +25,13 @@ This is just CRUD for the following data
 - [ ] filters
 - [ ] auth
 
+### Go (Fiber)
+
+- [x] models
+- [x] routers and controllers
+- [x] filters
+- [ ] auth
+
 ### Rust (Rocket)
 
 - [-] models
