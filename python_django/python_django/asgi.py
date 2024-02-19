@@ -1,5 +1,5 @@
 """
-ASGI config for assorted_jollof project.
+ASGI config for python_django project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'assorted_jollof.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'python_django.settings')
 
 application = get_asgi_application()
