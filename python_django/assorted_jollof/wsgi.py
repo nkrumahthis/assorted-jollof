@@ -1,5 +1,5 @@
 """
-WSGI config for python_django project.
+WSGI config for assorted_jollof project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'python_django.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'assorted_jollof.settings')
 
 application = get_wsgi_application()
