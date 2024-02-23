@@ -4,6 +4,7 @@ import (
 	"nkrumahthis/assorted-jollof/database"
 )
 
+// User struct.
 type User struct {
 	ID       int    `json:"id"`
 	Name     string `json:"name"`
@@ -11,7 +12,7 @@ type User struct {
 	Password string `json:"password"`
 }
 
-
+// Find all Users in the database.
 func FindAllUsers() ([]User, error) {
 	db, err := database.GetDB()
 	if err != nil {
@@ -41,6 +42,7 @@ func FindAllUsers() ([]User, error) {
 	return users, nil
 }
 
+// Find User by id.
 func FindUser(id int) (User, error) {
 	var user User
 
