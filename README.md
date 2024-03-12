@@ -36,3 +36,10 @@ This is just CRUD for the following data
 
 - [-] models
 - [-] routers and controllers
+
+### Php (Lumen)
+
+- [x] models
+- [x] routers and controllers
+- [ ] filters
+- [ ] auth
